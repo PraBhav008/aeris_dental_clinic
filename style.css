@@ -1,0 +1,388 @@
+/* ==========================================================================
+   FERRO & ASH — DESIGN TOKENS
+   Direction: "the anatomical ledger" — a dental studio presented like a
+   precision patient dossier: index tabs, chart rows, plate figures.
+   ========================================================================== */
+:root{
+  --ink:        #16231E;   /* near-black bottle green — primary text/bg */
+  --ink-soft:   #3C4A42;   /* muted ink for secondary text on paper */
+  --paper:      #E3E1D3;   /* cool stone — NOT warm cream, deliberately */
+  --paper-deep: #D7D4C2;   /* recessed paper (cards, table stripes) */
+  --paper-line: #C7C3AE;   /* hairline rules on paper */
+  --teal-panel: #223530;   /* dark panel background (protocol/booking) */
+  --teal-line:  #3E534A;   /* hairline rules on dark panel */
+  --oxide:      #9A3324;   /* rare stamp-red accent — CTAs, emphasis only */
+  --oxide-dark: #7C2A1D;
+  --brass:      #9C8347;   /* fine linework / labels */
+  --cream-text: #EDEAE0;   /* text on dark panels */
+
+  --font-display: 'Fraunces', 'Iowan Old Style', serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'SFMono-Regular', monospace;
+
+  --rail-w: 15rem;
+  --edge: clamp(1.25rem, 4vw, 3.5rem);
+  --max: 74rem;
+
+  --ease: cubic-bezier(.16,.84,.24,1);
+  --dur-s: .5s;
+  --dur-m: .9s;
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration: .001ms !important; transition-duration: .001ms !important; }
+}
+
+/* ==========================================================================
+   RESET / BASE
+   ========================================================================== */
+*,*::before,*::after{ box-sizing: border-box; }
+html{ scroll-behavior: smooth; }
+body{
+  margin:0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+img,svg{ display:block; max-width:100%; }
+a{ color: inherit; }
+h1,h2,h3{ font-family: var(--font-display); font-weight: 600; margin:0; letter-spacing:-.01em; }
+p{ margin:0; }
+.mono{ font-family: var(--font-mono); font-size:.72rem; letter-spacing:.06em; text-transform:uppercase; }
+button{ font-family: inherit; cursor:pointer; }
+
+.skip-link{
+  position:absolute; left:-999px; top:0; background:var(--ink); color:var(--paper);
+  padding:.75rem 1.25rem; z-index:999; font-family:var(--font-mono); font-size:.8rem;
+}
+.skip-link:focus{ left: 1rem; top: 1rem; }
+
+:focus-visible{ outline: 2px solid var(--oxide); outline-offset: 3px; }
+
+/* ==========================================================================
+   CHART RAIL — signature left navigation, styled as file-folder tabs
+   ========================================================================== */
+.chart-rail{
+  position: fixed; inset: 0 auto 0 0; width: var(--rail-w);
+  background: var(--ink); color: var(--cream-text);
+  display: flex; flex-direction: column; z-index: 50;
+  border-right: 1px solid var(--teal-line);
+}
+.chart-rail__mark{
+  font-family: var(--font-display); font-weight:700; font-size:1.1rem;
+  padding: 1.5rem var(--edge) 1rem; letter-spacing:.02em;
+}
+.chart-rail__list{
+  list-style:none; margin:0; padding:0; overflow-y:auto; flex:1;
+}
+.chart-rail__list a{
+  display:flex; gap:.6rem; align-items:baseline; text-decoration:none;
+  padding:.55rem 1.25rem; font-family: var(--font-mono); font-size:.72rem;
+  color: rgba(237,234,224,.55); border-left: 2px solid transparent;
+  transition: color .25s var(--ease), border-color .25s var(--ease), background .25s var(--ease);
+}
+.chart-rail__list a span{ font-family: var(--font-body); font-size:.82rem; text-transform:none; letter-spacing:0; }
+.chart-rail__list a:hover{ color: var(--cream-text); }
+.chart-rail__list a.is-active{
+  color: var(--cream-text); border-left-color: var(--oxide);
+  background: rgba(255,255,255,.04);
+}
+.chart-rail__cta{
+  margin: 1rem; padding: .85rem 1rem; background: var(--oxide); color:#fff;
+  border:none; font-size:.85rem; font-weight:600; letter-spacing:.02em;
+  transition: background .2s var(--ease);
+}
+.chart-rail__cta span{ display:none; }
+.chart-rail__cta:hover{ background: var(--oxide-dark); }
+
+.mobile-tabs{ display:none; }
+
+@media (max-width: 900px){
+  .chart-rail{ display:none; }
+  .mobile-tabs{
+    display:flex; overflow-x:auto; gap:0; position: sticky; top:0; z-index:40;
+    background: var(--ink); -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  .mobile-tabs::-webkit-scrollbar{ display:none; }
+}
+
+main{ margin-left: var(--rail-w); }
+@media (max-width: 900px){ main{ margin-left:0; } }
+
+/* ==========================================================================
+   SECTION SCAFFOLDING
+   ========================================================================== */
+.section{
+  padding: clamp(3.5rem, 8vw, 6.5rem) var(--edge);
+  border-bottom: 1px solid var(--paper-line);
+}
+.section__head{ max-width: 42rem; margin-bottom: 3rem; }
+.section__head--light{ color: var(--cream-text); }
+.section__tag{ color: var(--oxide); display:block; margin-bottom: 1rem; }
+.section__head--light .section__tag{ color: var(--brass); }
+.section__title{ font-size: clamp(1.9rem, 3.4vw, 2.8rem); line-height:1.15; margin-bottom: 1rem; }
+.section__intro{ color: var(--ink-soft); max-width: 38rem; font-size:1.02rem; }
+.section__head--light .section__intro{ color: rgba(237,234,224,.75); }
+
+.ledger__note, .mono.ledger__note{ margin-top:1.5rem; color: var(--ink-soft); opacity:.8; }
+
+/* ==========================================================================
+   PLATE — image placeholder component
+   ========================================================================== */
+.plate{ margin:0; position:relative; }
+.plate__frame{
+  position: relative; aspect-ratio: 4/5; background:
+    repeating-linear-gradient(135deg, var(--paper-deep) 0 2px, transparent 2px 14px),
+    var(--paper);
+  border: 1px solid var(--brass);
+  display:flex; align-items:center; justify-content:center;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 1s var(--ease);
+}
+.plate.is-visible .plate__frame{ clip-path: inset(0 0 0 0); }
+.plate__glyph{ font-size: 2rem; color: var(--brass); opacity:.6; }
+.plate__caption{ display:block; margin-top:.6rem; color: var(--ink-soft); }
+.plate--wide .plate__frame{ aspect-ratio: 8/5; }
+.plate--case .plate__frame{ aspect-ratio: 5/6; }
+.plate--person .plate__frame{ aspect-ratio: 4/5; }
+.plate--exterior .plate__frame{ aspect-ratio: 4/3; }
+
+.plate__corner{ position:absolute; width:14px; height:14px; border: 1px solid var(--brass); opacity:.8; }
+.plate__corner--tl{ top:-1px; left:-1px; border-right:none; border-bottom:none; }
+.plate__corner--br{ bottom:-1px; right:-1px; border-left:none; border-top:none; }
+
+/* ==========================================================================
+   REVEAL MOTION UTILITIES
+   ========================================================================== */
+.reveal-line{ display:block; overflow:hidden; }
+.reveal-line > span, .reveal-line{ display:block; }
+.reveal-line > span{
+  display:inline-block; transform: translateY(115%); transition: transform var(--dur-m) var(--ease);
+}
+.reveal-line.is-visible > span{ transform: translateY(0); }
+
+.reveal-up{ opacity:0; transform: translateY(18px); transition: opacity var(--dur-s) var(--ease), transform var(--dur-s) var(--ease); }
+.reveal-up.is-visible{ opacity:1; transform: translateY(0); }
+
+/* ==========================================================================
+   01 — HERO
+   ========================================================================== */
+.hero{ padding-top: clamp(4rem, 10vw, 7rem); border-bottom: 1px solid var(--paper-line); }
+.hero__eyebrow{ display:flex; align-items:center; gap:1rem; color: var(--ink-soft); margin-bottom:1.5rem; }
+.hero__rule{ flex:1; max-width:5rem; height:1px; background: var(--brass); }
+.hero__headline{ font-size: clamp(2.6rem, 8vw, 5.6rem); line-height:.98; margin-bottom: 2.5rem; }
+.hero__accent{ color: var(--oxide); font-style: italic; }
+
+.hero__grid{
+  display:grid; grid-template-columns: 1.1fr .9fr; gap: 2.5rem 3rem; align-items:start;
+}
+.hero__lede{ font-size:1.15rem; max-width:30rem; color: var(--ink-soft); grid-column:1; }
+.hero__actions{ display:flex; gap:1rem; flex-wrap:wrap; grid-column:1; }
+.plate--hero{ grid-column:2; grid-row: 1 / 4; align-self:start; transform: translateY(-2.5rem); }
+.hero__stats{ grid-column:1; display:flex; gap:2.5rem; padding-top:1rem; border-top:1px solid var(--paper-line); }
+.hero__stats div{ display:flex; flex-direction:column; }
+.hero__stats strong{ font-family:var(--font-display); font-size:1.8rem; }
+.hero__stats span{ font-size:.75rem; color:var(--ink-soft); }
+.hero__footnote{ grid-column:1; opacity:.6; }
+
+@media (max-width: 900px){
+  .hero__grid{ grid-template-columns: 1fr; }
+  .plate--hero{ grid-column:1; grid-row:auto; transform:none; order:-1; margin-bottom:2rem; }
+}
+
+/* buttons */
+.btn{ display:inline-flex; align-items:center; gap:.5rem; padding: .95rem 1.6rem; font-size:.92rem; font-weight:600; border:none; text-decoration:none; transition: transform .2s var(--ease), background .2s var(--ease); }
+.btn--primary{ background: var(--ink); color: var(--paper); }
+.btn--primary:hover{ background: var(--oxide); }
+.btn--ghost{ background:transparent; color:var(--ink); border-bottom:1px solid var(--ink); padding-left:0; padding-right:0; }
+.btn--stamp{ background: var(--oxide); color:#fff; }
+.btn--stamp:hover{ background: var(--oxide-dark); }
+
+/* ==========================================================================
+   02 — URGENT
+   ========================================================================== */
+.urgent{ background: var(--teal-panel); color: var(--cream-text); border-bottom:1px solid var(--teal-line); }
+.urgent__tag{ color: var(--brass); display:block; margin-bottom:1rem; }
+.urgent__band{ max-width: 46rem; margin-bottom: 3rem; }
+.urgent__headline{ font-family: var(--font-display); font-size: clamp(1.6rem, 3.2vw, 2.4rem); margin-bottom:1.5rem; }
+.urgent__contact p{ margin-top:.75rem; color: rgba(237,234,224,.6); max-width: 34rem; }
+.urgent__notes{ display:grid; grid-template-columns: repeat(3,1fr); gap: 2rem; border-top:1px solid var(--teal-line); padding-top:2rem; }
+.urgent__notes span{ color: var(--brass); display:block; margin-bottom:.6rem; }
+.urgent__notes p{ color: rgba(237,234,224,.85); }
+@media (max-width:760px){ .urgent__notes{ grid-template-columns:1fr; } }
+
+/* ==========================================================================
+   03 — TREATMENTS (ledger rows, not cards)
+   ========================================================================== */
+.ledger{ list-style:none; margin:0; padding:0; border-top:1px solid var(--ink); }
+.ledger__row{
+  display:grid; grid-template-columns: 1fr 2fr auto; gap:1.5rem; align-items:baseline;
+  padding: 1.1rem 0; border-bottom: 1px solid var(--paper-line);
+  background-image: linear-gradient(var(--paper-deep), var(--paper-deep));
+  background-repeat:no-repeat; background-size: 0% 100%; background-position:left;
+  transition: background-size .35s var(--ease);
+}
+.ledger__row:hover{ background-size: 100% 100%; }
+.ledger__name{ font-family: var(--font-display); font-size:1.15rem; }
+.ledger__desc{ color: var(--ink-soft); font-size:.92rem; }
+.ledger__price{ color: var(--oxide); }
+@media (max-width:700px){ .ledger__row{ grid-template-columns:1fr; gap:.3rem; } }
+
+/* ==========================================================================
+   04 — CLINICIANS (alternating asymmetric rows)
+   ========================================================================== */
+.clinician{ display:grid; grid-template-columns: .8fr 1.2fr; gap: 2.5rem; align-items:center; padding: 2.5rem 0; border-bottom:1px solid var(--paper-line); }
+.clinician:last-of-type{ border-bottom:none; }
+.clinician--reverse{ direction: rtl; }
+.clinician--reverse > *{ direction: ltr; }
+.clinician__text h3{ font-size:1.5rem; margin-bottom:.3rem; }
+.clinician__text h3 .mono{ display:block; margin-top:.4rem; color:var(--ink-soft); }
+.clinician__role{ color: var(--oxide); font-family:var(--font-mono); font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; margin: .6rem 0 1rem; }
+.clinician__text p:last-child{ color: var(--ink-soft); max-width:36rem; }
+@media (max-width:760px){ .clinician, .clinician--reverse{ grid-template-columns:1fr; direction:ltr; } }
+
+/* ==========================================================================
+   05 — APPARATUS
+   ========================================================================== */
+.apparatus__grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap: 3rem 2.5rem; }
+.apparatus__item h3{ margin: 1rem 0 .4rem; font-size:1.2rem; }
+.apparatus__item p{ color: var(--ink-soft); }
+@media (max-width:760px){ .apparatus__grid{ grid-template-columns:1fr; } }
+
+/* ==========================================================================
+   06 — PROTOCOL
+   ========================================================================== */
+.protocol{ background: var(--teal-panel); color: var(--cream-text); }
+.protocol__list{ border-top:1px solid var(--teal-line); }
+.protocol__row{ display:grid; grid-template-columns: 3rem 1fr; gap:1.5rem; padding:1.4rem 0; border-bottom:1px solid var(--teal-line); }
+.protocol__row span{ color: var(--brass); font-size:1.1rem; }
+.protocol__row p{ color: rgba(237,234,224,.85); max-width:40rem; }
+
+/* ==========================================================================
+   07 — PROCESS (connected track, order-justified numbering)
+   ========================================================================== */
+.process__track{ position:relative; display:grid; grid-template-columns: repeat(4,1fr); gap:2rem; }
+.process__track::before{ content:""; position:absolute; top:1.1rem; left:0; right:0; height:1px; background: var(--paper-line); }
+.process__step{ position:relative; }
+.process__num{ display:inline-block; background: var(--paper); padding-right:1rem; color:var(--oxide); font-size:.95rem; }
+.process__step h3{ margin: .9rem 0 .4rem; font-size:1.1rem; }
+.process__step p{ color: var(--ink-soft); font-size:.92rem; }
+@media (max-width:760px){
+  .process__track{ grid-template-columns:1fr; }
+  .process__track::before{ display:none; }
+}
+
+/* ==========================================================================
+   08 — INVESTMENT
+   ========================================================================== */
+.investment{ background: var(--teal-panel); color: var(--cream-text); }
+.investment__grid{ display:grid; grid-template-columns: repeat(3,1fr); gap:2.5rem; max-width: 60rem; }
+.investment__grid p{ color: rgba(237,234,224,.85); }
+@media (max-width:760px){ .investment__grid{ grid-template-columns:1fr; } }
+
+/* ==========================================================================
+   09 — EVIDENCE (before/after)
+   ========================================================================== */
+.evidence__grid{ display:grid; grid-template-columns: repeat(3,1fr); gap:2.5rem; }
+.evidence__pair{ display:grid; grid-template-columns:1fr 1fr; gap:.6rem; }
+.evidence__label{ margin-top:.8rem; color: var(--ink-soft); }
+@media (max-width:760px){ .evidence__grid{ grid-template-columns:1fr; } }
+
+/* ==========================================================================
+   10 — RECORD (testimonials, staggered)
+   ========================================================================== */
+.record{ background: var(--teal-panel); color: var(--cream-text); }
+.record__list{ display:grid; gap: 2.5rem; }
+.record__quote{ margin:0; max-width: 42rem; padding-left:1.5rem; border-left:2px solid var(--brass); }
+.record__quote:nth-child(2){ margin-left: auto; }
+.record__quote:nth-child(3){ margin-left: 4rem; }
+.record__quote p{ font-family: var(--font-display); font-size:1.3rem; line-height:1.4; margin-bottom:1rem; }
+.record__quote cite{ color: var(--brass); font-style:normal; }
+@media (max-width:760px){ .record__quote, .record__quote:nth-child(2), .record__quote:nth-child(3){ margin-left:0; } }
+
+/* ==========================================================================
+   11 — COVERAGE
+   ========================================================================== */
+.coverage__grid{ display:grid; grid-template-columns: repeat(3,1fr); gap:2.5rem; }
+.coverage__grid h3{ font-size:1.1rem; margin-bottom:.6rem; }
+.coverage__grid p{ color: var(--ink-soft); }
+@media (max-width:760px){ .coverage__grid{ grid-template-columns:1fr; } }
+
+/* ==========================================================================
+   12 — QUERIES / FAQ
+   ========================================================================== */
+.faq{ border-top:1px solid var(--teal-line); }
+.faq__item{ border-bottom:1px solid var(--teal-line); padding: 1.2rem 0; }
+.faq__item summary{ cursor:pointer; font-family:var(--font-display); font-size:1.15rem; list-style:none; display:flex; justify-content:space-between; align-items:center; }
+.faq__item summary::-webkit-details-marker{ display:none; }
+.faq__item summary::after{ content:"+"; color:var(--brass); font-size:1.4rem; transition: transform .25s var(--ease); }
+.faq__item[open] summary::after{ transform: rotate(45deg); }
+.faq__item p{ margin-top:.9rem; color: rgba(237,234,224,.8); max-width:38rem; }
+
+/* ==========================================================================
+   13 — HOURS
+   ========================================================================== */
+.hours__table{ width:100%; max-width:32rem; border-collapse:collapse; }
+.hours__table th{ text-align:left; font-weight:500; padding: .8rem 0; border-bottom:1px solid var(--paper-line); }
+.hours__table td{ text-align:right; padding: .8rem 0; border-bottom:1px solid var(--paper-line); color: var(--oxide); }
+
+/* ==========================================================================
+   14 — BOOKING FORM
+   ========================================================================== */
+.booking{ background: var(--teal-panel); color: var(--cream-text); }
+.booking-form{ max-width: 44rem; display:flex; flex-direction:column; gap:1.4rem; }
+.booking-form__row{ display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; }
+.booking-form label{ display:flex; flex-direction:column; gap:.5rem; font-size:.85rem; color: rgba(237,234,224,.85); }
+.booking-form label span{ color: var(--oxide); }
+input, select, textarea{
+  font-family: var(--font-body); font-size:.95rem; padding:.75rem .9rem;
+  background: rgba(255,255,255,.04); border:1px solid var(--teal-line); color: var(--cream-text);
+  border-radius:0;
+}
+input:focus, select:focus, textarea:focus{ border-color: var(--brass); }
+.booking-form__fieldset{ border:1px solid var(--teal-line); padding: 1rem 1.2rem; display:flex; gap:2rem; }
+.booking-form__fieldset legend{ font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; padding: 0 .5rem; color: var(--brass); }
+.radio, .checkbox{ display:flex; align-items:center; gap:.6rem; font-size:.9rem; color: rgba(237,234,224,.85); flex-direction:row; }
+.radio input, .checkbox input{ width:auto; padding:0; }
+.booking-form__footer{ display:flex; align-items:center; gap:1.5rem; }
+.booking-form__status{ color: var(--brass); }
+@media (max-width:700px){ .booking-form__row{ grid-template-columns:1fr; } }
+
+/* ==========================================================================
+   15 — VISIT
+   ========================================================================== */
+.visit__grid{ display:grid; grid-template-columns: .8fr 1.2fr; gap:3rem; align-items:center; }
+.visit__details p.mono{ margin-top:1.4rem; color: var(--brass); }
+.visit__details p.mono:first-child{ margin-top:0; }
+.visit__details p:not(.mono){ margin-top:.4rem; }
+@media (max-width:760px){ .visit__grid{ grid-template-columns:1fr; } }
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+.footer{ background: var(--ink); color: var(--cream-text); padding: 2.5rem var(--edge) 2rem; margin-left: var(--rail-w); }
+@media (max-width:900px){ .footer{ margin-left:0; } }
+.footer__top{ display:flex; justify-content:space-between; align-items:center; padding-bottom:2rem; border-bottom:1px solid var(--teal-line); flex-wrap:wrap; gap:1rem; }
+.footer__mark{ font-family:var(--font-display); font-size:1.3rem; }
+.footer__links{ display:flex; gap:1.5rem; }
+.footer__links a{ text-decoration:none; font-size:.9rem; color: rgba(237,234,224,.75); }
+.footer__links a:hover{ color: var(--cream-text); }
+.footer__bottom{ display:flex; justify-content:space-between; padding-top:1.5rem; color: rgba(237,234,224,.5); flex-wrap:wrap; gap:.5rem; }
+
+/* Real photography integration */
+.plate__frame{ overflow:hidden; background:var(--paper-deep); }
+.plate__image{
+  width:100%; height:100%; object-fit:cover; display:block;
+  transform:scale(1.035); transition:transform 1.2s var(--ease), filter .5s var(--ease);
+  filter:saturate(.82) contrast(1.03);
+}
+.plate.is-visible .plate__image{ transform:scale(1); }
+.plate:hover .plate__image{ transform:scale(1.025); filter:saturate(.95) contrast(1.02); }
+.plate--person .plate__image{ object-position:center 20%; }
+.plate--wide .plate__image{ object-position:center; }
+.plate--exterior .plate__image{ object-position:center 55%; }
+@media (prefers-reduced-motion: reduce){ .plate__image{ transition:none; transform:none; } }
